@@ -1,0 +1,70 @@
+---
+- hosts: demogroup
+  vars_files:
+    - Varible_file.yml
+  vars:
+    Dirpath: "/home/sushil/roles/hadoopdir"
+    Dicpath: "/home/sushil/roles/testdir"
+    hadoop_dir: "/home/alepo/roles/hadoop"
+  tasks:
+
+#    - name: update cache
+#      apt: update_cache=yes
+#      environment:
+#       http_proxy: "{{http_proxy}}"
+#       https_proxy: "{{https_proxy}}"
+#      become: yes
+ 
+ #   - name: install apache2 on node
+ #     apt:
+ #       name: apache2
+ #       state: present
+ #     environment: 
+ #       http_proxy: "{{http_proxy}}"
+ #       https_proxy: "{{https_proxy}}"
+ #     become: yes
+        
+
+    - name: test for debug
+      debug:
+        msg: "Hello world"
+
+    - name: create hadoop directory in path
+      file:
+        path: "{{Dirpath}}"
+        state: directory
+
+    - name: create test directory
+      file:
+        path: "{{Dicpath}}"
+        state: directory
+
+
+    - name: download hadoop from internet
+      get_url: 
+        url: "{{hadoop_download_url}}"
+        dest: "{{Dicpath}}"
+      environment:
+        http_proxy: "{{http_proxy}}"
+        https_proxy: "{{https_proxy}}"
+      become: yes
+
+    - name: extract the file in specific directory
+      unarchive: 
+        src: /home/sushil/roles/testdir/hadoop-2.7.3.tar.gz
+        dest: /home/sushil/roles/hadoopdir
+      become: yes
+ 
+    - name: Down load nginx tar file
+      get_url: 
+        url: "{{nginx_download_url}}"
+        dest: "{{Nigin_dir}}"
+      environment:
+       http_proxy: "{{http_proxy}}"
+       https_proxy: "{{https_proxy}}"
+
+    - name: Extract the downloaded tar file in specific dir
+      unarchive: 
+        src: /home/sushil/roles/Niginx_dir
+        dest: /home/sushil/roles/Niginx_dir
+      become: yes
