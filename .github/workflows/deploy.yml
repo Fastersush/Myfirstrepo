@@ -27,10 +27,11 @@ jobs:
       - name: Configure Terraform
         run: |
           echo ${{ secrets.GCLOUD_SERVICE_ACCOUNT_KEY }} > key.json
+          cat key.json
           gcloud auth activate-service-account --key-file=key.json
           gcloud config set project developmentapi-398207
           gcloud config set compute/zone asia-south-1
-          rm -f key.json
+         
 
       - name: Initialize Terraform
         run: terraform init
